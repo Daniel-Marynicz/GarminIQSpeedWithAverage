@@ -1,0 +1,6 @@
+<strings>
+    <string id="AppName">Speed with average</string>
+
+    <string id="labelKPH">KPH with average</string>
+    <string id="labelMPH">MPH with average</string>
+</strings>
