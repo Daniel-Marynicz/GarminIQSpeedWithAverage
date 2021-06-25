@@ -4,12 +4,12 @@ using Toybox.System;
 
 class SpeedwithaverageView extends DataFieldWithFiveValuesView {
 
-	var distanceUnits;
-	const oneMileAsMSec = 1.toFloat()/0.44704.toFloat();
+	var speedCalc; 
+
     function initialize() {
         DataFieldWithFiveValuesView.initialize();
 		
-		distanceUnits = 0;
+		var distanceUnits = 0;
         var settings = System.getDeviceSettings();
      	if(settings has :distanceUnits && settings.distanceUnits != null) {
      		distanceUnits = settings.distanceUnits;
@@ -17,10 +17,12 @@ class SpeedwithaverageView extends DataFieldWithFiveValuesView {
      	switch (distanceUnits) {
      		case System.UNIT_STATUTE:
      			labelValue = Rez.Strings.labelMPH;
+     			speedCalc = new SpeedCalc(System.UNIT_STATUTE);
  				break;
  			case System.UNIT_METRIC:
      		default:
      			labelValue = Rez.Strings.labelKPH;
+     			speedCalc  = new SpeedCalc(System.UNIT_METRIC);
  				break;
      	}
     }
@@ -38,24 +40,12 @@ class SpeedwithaverageView extends DataFieldWithFiveValuesView {
         bottomRightValue = "__._";
         // See Activity.Info in the documentation for available information.
         if(info has :currentSpeed && info.currentSpeed != null) {
-        	speed = computeSpeed(info.currentSpeed);
+        	speed = speedCalc.computeSpeed(info.currentSpeed);
     		mainValue = speed.format("%.1f");
         }
         if(info has :averageSpeed && info.averageSpeed != null) {
-        	avgSpeed = computeSpeed(info.averageSpeed);
+        	avgSpeed = speedCalc.computeSpeed(info.averageSpeed);
         	bottomRightValue = avgSpeed.format("%.1f");
         }
-    }
-    
-    function computeSpeed(speedAsMps) {
-    	switch (distanceUnits) {
-    		case System.UNIT_STATUTE:
-     			return speedAsMps.toFloat() * oneMileAsMSec.toFloat();
- 			case System.UNIT_METRIC:
- 				return speedAsMps.toFloat() * 18.toFloat() / 5.toFloat();
- 			default:
-     			return speedAsMps.toFloat() * 18.toFloat() / 5.toFloat();
-     		
-     	}
     }
 }
