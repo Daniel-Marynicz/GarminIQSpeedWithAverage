@@ -1,9 +1,13 @@
 using Toybox.Application;
+using Toybox.WatchUi;
 
 class SpeedwithaverageApp extends Application.AppBase {
 
+	protected var mianView;
+	
     function initialize() {
         AppBase.initialize();
+        mianView = new SpeedwithaverageView();
     }
 
     // onStart() is called on application start up
@@ -16,7 +20,12 @@ class SpeedwithaverageApp extends Application.AppBase {
 
     //! Return the initial view of your application here
     function getInitialView() {
-        return [ new SpeedwithaverageView() ];
+        return [ mianView ];
     }
 
+	function onSettingsChanged()
+    {
+    	mianView.onSettingsChanged();
+    	WatchUi.requestUpdate(); 
+    }
 }

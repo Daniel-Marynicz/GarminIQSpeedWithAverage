@@ -9,6 +9,11 @@ class SpeedwithaverageView extends DataFieldWithFiveValuesView {
     function initialize() {
         DataFieldWithFiveValuesView.initialize();
 		
+		onSettingsChanged();
+    }
+
+	function onSettingsChanged()
+	{
 		var distanceUnits = 0;
         var settings = System.getDeviceSettings();
      	if(settings has :distanceUnits && settings.distanceUnits != null) {
@@ -25,8 +30,7 @@ class SpeedwithaverageView extends DataFieldWithFiveValuesView {
      			speedCalc  = new SpeedCalc(System.UNIT_METRIC);
  				break;
      	}
-    }
-
+	}
 
     // The given info object contains all the current workout information.
     // Calculate a value and save it locally in this method.
